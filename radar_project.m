@@ -161,18 +161,18 @@ figure,surf(doppler_axis,range_axis,RDM);
 
 % *%TODO* :
 %Select the number of Training Cells in both the dimensions.
-Tr = 10;
-Tc = 10;
+Tr = 3;
+Tc = 3;
 
 % *%TODO* :
 %Select the number of Guard Cells in both dimensions around the Cell under 
 %test (CUT) for accurate estimation
-Gr = 5;
-Gc = 5;
+Gr = 2;
+Gc = 2;
 
 % *%TODO* :
 % offset the threshold by SNR value in dB
-threshold = 30;
+threshold = 5;
 
 % *%TODO* :
 %Create a vector to store noise_level for each iteration on training cells
@@ -200,19 +200,29 @@ for i = 1:rows -2*Tr-2*Gr
         %cell under test indices
         CUT = [i + Tr + Gr, j + Tc + Gc];
         
-        %get indices for left half and right half of training matrix
-        left_row_ndx = i:i + Tr -1;
-        left_col_ndx = j:j + Tc - 1;
-        right_row_ndx = CUT(1) + 1: CUT(1)+Tr;
-        right_col_ndx = CUT(2)+1:CUT(2) + Tc;
+        outer_row_begin = i;
+        outer_row_end = i + 2*Tr + 2*Gr -1;
         
-        %comoute the sum over the left and right half of training matrix
-        noise_level_left = sum(db2pow(RDM(left_row_ndx, left_col_ndx)));
-        noise_level_right = sum(db2pow(RDM(right_row_ndx, right_col_ndx)));
+        outer_col_begin = j;
+        outer_col_end = j + 2*Tc + 2*Gc -1;
         
-        %compute CFAR Threshold based on avg noise
-        number_of_cells = (length(left_row_ndx) + length(right_row_ndx)) * (length(left_col_ndx) + length(right_col_ndx));
-        noise_level_avg = (noise_level_left + noise_level_right)/number_of_cells;
+        inner_row_begin = i + Tr;
+        inner_row_end =  i + Tr + 2*Gr -1;
+        inner_col_begin = j + Tc;
+        inner_col_end = j + Tc + 2*Gc -1;
+        
+        count = 0;
+        noise_level_sum = 0;
+        for k = outer_row_begin:outer_row_end
+            for l = outer_col_begin:outer_col_end
+                
+                if (k >=  inner_row_begin && k <= inner_row_end && l >= inner_col_begin && l <= inner_col_end)
+                    count = count + 1;
+                    noise_level_sum = db2pow(RDM(k,l)) + noise_level_sum;
+                end
+            end
+        end
+        noise_level_avg = noise_level_sum/count;
         noise_level_avg_log = pow2db(noise_level_avg);
         
         cfar_thresh = threshold + noise_level_avg_log;

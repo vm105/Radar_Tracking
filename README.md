@@ -8,11 +8,11 @@
 
 - Selection of training and guard cells:
   - this was done through observation iteratively
-  - 10 training cells were selected for each half of the rows of the training matrix
-  - 10 training cells were selected for each half of the cols of the training matrix
-  - 5 guard cells were selected for each half of the rows of the training matrix
-  - 5 guard  cells were selected for each half of the cols of the training matrix
-  - The offset was chosen to be 30 dB
+  - 3 training cells were selected for each half of the rows of the training matrix
+  - 3 training cells were selected for each half of the cols of the training matrix
+  - 2 guard cells were selected for each half of the rows of the training matrix
+  - 2 guard  cells were selected for each half of the cols of the training matrix
+  - The offset was chosen to be 5 dB
 
 
 - Steps taken to suppress edge cells:
