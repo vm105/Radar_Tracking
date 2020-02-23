@@ -172,7 +172,7 @@ Gc = 2;
 
 % *%TODO* :
 % offset the threshold by SNR value in dB
-threshold = 5;
+threshold = 10;
 
 % *%TODO* :
 %Create a vector to store noise_level for each iteration on training cells
@@ -216,7 +216,7 @@ for i = 1:rows -2*Tr-2*Gr
         for k = outer_row_begin:outer_row_end
             for l = outer_col_begin:outer_col_end
                 
-                if (k >=  inner_row_begin && k <= inner_row_end && l >= inner_col_begin && l <= inner_col_end)
+                if ~(k >=  inner_row_begin && k <= inner_row_end && l >= inner_col_begin && l <= inner_col_end)
                     count = count + 1;
                     noise_level_sum = db2pow(RDM(k,l)) + noise_level_sum;
                 end

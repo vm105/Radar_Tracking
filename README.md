@@ -12,7 +12,7 @@
   - 3 training cells were selected for each half of the cols of the training matrix
   - 2 guard cells were selected for each half of the rows of the training matrix
   - 2 guard  cells were selected for each half of the cols of the training matrix
-  - The offset was chosen to be 5 dB
+  - The offset was chosen to be 10 dB
 
 
 - Steps taken to suppress edge cells:
